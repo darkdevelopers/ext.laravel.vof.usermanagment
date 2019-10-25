@@ -7,5 +7,10 @@
 Auth::routes();
 
 Route::prefix('admin')->group(function () {
-    Route::get('/usermanagment', '\Vof\Usermanagment\Http\Controllers\UsermanagmentController@index')->name('admin-usermanagment');
+    Route::resource('/usermanagement', '\Vof\Usermanagment\Http\Controllers\UsermanagmentController', [
+        'names' => [
+            'index' => 'usermanagement',
+            'destroy' => 'usermanagement.destroy',
+        ],
+    ]);
 });

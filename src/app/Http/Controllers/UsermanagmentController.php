@@ -8,6 +8,7 @@ namespace Vof\Usermanagment\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Vof\Admin\Models\Admin;
 
 /**
  * Class UsermanagmentController
@@ -15,6 +16,9 @@ use Illuminate\Routing\Controller;
  */
 class UsermanagmentController extends Controller
 {
+    /** @var int USERMANGAMENT_PAGINATION_DEFAULT */
+    const USERMANGAMENT_PAGINATION_DEFAULT = 15;
+
     /**
      * UsermanagmentController constructor.
      */
@@ -25,13 +29,31 @@ class UsermanagmentController extends Controller
 
     /**
      * @param Request $request
-     * @return |null
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
     public function index(Request $request)
     {
-        echo "Usermanagment";
+        return view('vof.admin.usermanagment::index', [
+            'admins' => Admin::paginate(self::USERMANGAMENT_PAGINATION_DEFAULT)
+        ]);
+    }
+
+    public function create()
+    {
+
+    }
+
+    public function show($id)
+    {
+        var_dump("Hello");
+        var_dump($id);
         exit();
-        return;
-        //return view('admin::dashboard');
+    }
+
+    public function destroy(int $id)
+    {
+        var_dump("Destory");
+        var_dump($id);
+        exit();
     }
 }
