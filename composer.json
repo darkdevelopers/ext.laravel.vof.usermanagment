@@ -1,0 +1,30 @@
+{
+  "name": "vof/ext.laravel.vof.usermanagment",
+  "description": "This is a libary for manage admin users.",
+  "type": "library",
+  "license": "PRIVATE",
+  "authors": [
+    {
+      "name": "Marco Schauer",
+      "email": "marco.schauer@darkdevelopers.de"
+    }
+  ],
+  "require": {},
+  "autoload": {
+    "psr-4": {
+      "Vof\\Usermanagment\\": "src/"
+    }
+  },
+  "autoload-dev": {
+    "psr-4": {
+      "Vof\\Usermanagment\\Tests\\": "tests/"
+    }
+  },
+  "extra": {
+    "laravel": {
+      "providers": [
+        "Vof\\Usermanagment\\UsermanagmentServiceProvider"
+      ]
+    }
+  }
+}
