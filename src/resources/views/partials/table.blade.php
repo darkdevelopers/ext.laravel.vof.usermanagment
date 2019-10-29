@@ -1,5 +1,5 @@
 <div class="card">
-    <a href="{{ route('usermanagement.create') }}" class="btn btn-primary">
+    <a href="{{ route('usermanagement.create') }}" class="btn btn-primary" style="margin: 5px;">
         <i class="fa fa-fw fa-user-plus" aria-hidden="true"></i>
         @lang('vof.admin.usermanagment::usermanagment.partials.table.create-new-user-btn')
     </a>
@@ -26,7 +26,9 @@
                     <td class="table-btn">
                         {!! Form::open(array('url' => route('usermanagement.destroy', $admin->id), 'class' => '', 'data-toggle' => 'tooltip', 'title' => trans('vof.admin.usermanagment::usermanagment.partials.table.delete_tooltip'))) !!}
                         {!! Form::hidden('_method', 'DELETE') !!}
-                        {!! Form::button(trans('vof.admin.usermanagment::usermanagment.partials.table.delete_button'), array('class' => 'btn btn-danger','type' => 'button', 'style' =>'width: 100%;' ,'data-toggle' => 'modal', 'data-target' => '#confirmDelete', 'data-title' => trans('vof.admin.usermanagment::usermanagment.partials.table.delete_user_title'), 'data-message' => trans('vof.admin.usermanagment::usermanagment.partials.table.delete_user_message', ['admin' => $admin->name]))) !!}
+                        @lang('vof.admin.usermanagment::usermanagment.partials.table.show_button', ['route' => route('usermanagement.show', $admin->id)])
+                        @lang('vof.admin.usermanagment::usermanagment.partials.table.edit_button', ['route' => route('usermanagement.edit', $admin->id)])
+                        {!! Form::button(trans('vof.admin.usermanagment::usermanagment.partials.table.delete_button'), array('class' => 'btn btn-danger','type' => 'button', 'style' =>'width: auto;' ,'data-toggle' => 'modal', 'data-target' => '#confirmDelete', 'data-title' => trans('vof.admin.usermanagment::usermanagment.partials.table.delete_user_title'), 'data-message' => trans('vof.admin.usermanagment::usermanagment.partials.table.delete_user_message', ['admin' => $admin->name]))) !!}
                         {!! Form::close() !!}
                     </td>
                 </tr>

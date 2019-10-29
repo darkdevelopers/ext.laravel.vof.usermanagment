@@ -1,7 +1,5 @@
 <script type="text/javascript">
     $(document).ready(function(){
-        console.log('rdy');
-        console.log($('#confirmDelete'));
         $('#confirmDelete').on('shown.bs.modal', function (e) {
             var message = $(e.relatedTarget).attr('data-message');
             var title = $(e.relatedTarget).attr('data-title');

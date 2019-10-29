@@ -6,11 +6,10 @@
             src="https://code.jquery.com/jquery-3.4.1.min.js"
             integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
             crossorigin="anonymous"></script>
-    @include('vof.admin.usermanagment::scripts.delete-modal-script')
 @endsection
 
 @section('title')
-    <title>@lang('vof.admin.usermanagment::usermanagment.index.headline') | VOF Admin</title>
+    <title>@lang('vof.admin.usermanagment::usermanagment.create.headline') | VOF Admin</title>
 @endsection()
 
 @section('sidebar')
@@ -18,11 +17,11 @@
 @endsection()
 
 @section('content')
-    <h2>@lang('vof.admin.usermanagment::usermanagment.index.headline')</h2>
+    <h2>@lang('vof.admin.usermanagment::usermanagment.create.headline')</h2>
     <div class="row">
         <div class="col-sm-12">
             @include('vof.admin.usermanagment::partials.form-status')
         </div>
     </div>
-    @include('vof.admin.usermanagment::partials.table', ['admins' => $admins])
+    @include('vof.admin.usermanagment::partials.create-read-update-form', ['create' => true])
 @endsection()
