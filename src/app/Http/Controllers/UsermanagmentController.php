@@ -53,6 +53,15 @@ class UsermanagmentController extends Controller
      */
     public function show($id)
     {
+        return view('vof.admin.usermanagment::show');
+    }
+
+    /**
+     * @param $id
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     */
+    public function edit($id)
+    {
         return view('vof.admin.usermanagment::edit');
     }
 
@@ -95,7 +104,7 @@ class UsermanagmentController extends Controller
 
         /** @var Admin $admin */
         $admin = Admin::create($request->all());
-        if(!$admin->exists()){
+        if (!$admin->exists()) {
             return redirect(route('usermanagement.create'))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.admin-cant-created'))->withInput();
         }
 

@@ -24,7 +24,7 @@
                     <td class="table-text">{{ $admin->updated_at }}</td>
 
                     <td class="table-btn">
-                        {!! Form::open(array('url' => route('usermanagement.destroy', $admin->id), 'class' => '', 'data-toggle' => 'tooltip', 'title' => trans('vof.admin.usermanagment::usermanagment.partials.table.delete_tooltip'))) !!}
+                        {!! Form::open(array('url' => route('usermanagement.destroy', $admin->id), 'class' => '', 'data-toggle' => 'tooltip')) !!}
                         {!! Form::hidden('_method', 'DELETE') !!}
                         @lang('vof.admin.usermanagment::usermanagment.partials.table.show_button', ['route' => route('usermanagement.show', $admin->id)])
                         @lang('vof.admin.usermanagment::usermanagment.partials.table.edit_button', ['route' => route('usermanagement.edit', $admin->id)])

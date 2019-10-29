@@ -7,6 +7,12 @@ return [
     'create' => [
         'headline' => 'Create Admin',
     ],
+    'edit' => [
+        'headline' => 'Edit Admin',
+    ],
+    'show' => [
+        'headline' => 'Show Admin',
+    ],
     'partials' => [
         'table' => [
             'create-new-user-btn' => 'Create Admin',
@@ -17,6 +23,8 @@ return [
             'actions' => 'Actions',
             'delete_button' => '<i class="fas fa-fw fa-trash-alt" aria-hidden="true"></i>',
             'delete_tooltip' => 'Delete Admin',
+            'show_tooltip' => 'Show Admin',
+            'edit_tooltip' => 'Edit Admin',
             'delete_user_title' => 'Delete Admin sure?',
             'delete_user_message' => 'Are you sure you want to delete :admin?',
             'delete_user_btn_cancel' => '<i class="fas fa-fw fa-times" aria-hidden="true"></i> Cancel',
@@ -30,6 +38,7 @@ return [
             'email' => 'E-Mail Adress',
             'password' => 'Password',
             'btn-create' => 'Create',
+            'btn-edit' => 'Edit',
             'username-required' => 'The username field is required.',
             'email-isexists' => 'The email adress is exists',
             'admin-cant-created' => 'This admin cant created',
