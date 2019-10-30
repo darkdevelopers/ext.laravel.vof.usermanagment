@@ -8,6 +8,7 @@ namespace Vof\Usermanagment\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Hash;
 use Vof\Admin\Models\Admin;
 use Validator;
 
@@ -48,21 +49,36 @@ class UsermanagmentController extends Controller
     }
 
     /**
-     * @param $id
+     * @param int $id
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function show($id)
+    public function edit(int $id)
     {
-        return view('vof.admin.usermanagment::show');
+        $admin = Admin::where('id', $id)->first();
+        return view('vof.admin.usermanagment::edit', ['admin' => $admin]);
     }
 
-    /**
-     * @param $id
-     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
-     */
-    public function edit($id)
+    public function update(Request $request, int $id)
     {
-        return view('vof.admin.usermanagment::edit');
+        $validator = Validator::make($request->all(), [
+            'name' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8'
+        ]);
+
+        if ($validator->fails()) {
+            $failedRules = $validator->failed();
+            if (isset($failedRules['name']['Required'])) {
+                return redirect(route('usermanagement.edit'))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.username-required'))->withInput()->withErrors($validator, 'error');
+            }
+            if (isset($failedRules['email']['Required'])) {
+                return redirect(route('usermanagement.edit'))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.email-required'))->withInput()->withErrors($validator, 'error');
+            }
+        }
+
+        Admin::where('id', $id)->update(['name' => $request->get('name'), 'email' => $request->get('email'), 'password' => Hash::make($request->get('password'))]);
+
+        return redirect(route('usermanagement'))->with('success', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.admin-created-success'));
     }
 
     /**
@@ -103,7 +119,7 @@ class UsermanagmentController extends Controller
         }
 
         /** @var Admin $admin */
-        $admin = Admin::create($request->all());
+        $admin = Admin::create(['name' => $request->get('name'), 'email' => $request->get('email'), 'password' => Hash::make($request->get('password'))]);
         if (!$admin->exists()) {
             return redirect(route('usermanagement.create'))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.admin-cant-created'))->withInput();
         }

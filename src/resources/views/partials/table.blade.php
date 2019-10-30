@@ -26,7 +26,6 @@
                     <td class="table-btn">
                         {!! Form::open(array('url' => route('usermanagement.destroy', $admin->id), 'class' => '', 'data-toggle' => 'tooltip')) !!}
                         {!! Form::hidden('_method', 'DELETE') !!}
-                        @lang('vof.admin.usermanagment::usermanagment.partials.table.show_button', ['route' => route('usermanagement.show', $admin->id)])
                         @lang('vof.admin.usermanagment::usermanagment.partials.table.edit_button', ['route' => route('usermanagement.edit', $admin->id)])
                         {!! Form::button(trans('vof.admin.usermanagment::usermanagment.partials.table.delete_button'), array('class' => 'btn btn-danger','type' => 'button', 'style' =>'width: auto;' ,'data-toggle' => 'modal', 'data-target' => '#confirmDelete', 'data-title' => trans('vof.admin.usermanagment::usermanagment.partials.table.delete_user_title'), 'data-message' => trans('vof.admin.usermanagment::usermanagment.partials.table.delete_user_message', ['admin' => $admin->name]))) !!}
                         {!! Form::close() !!}

@@ -39,6 +39,7 @@ return [
             'password' => 'Password',
             'btn-create' => 'Create',
             'btn-edit' => 'Edit',
+            'btn-save' => 'Save',
             'username-required' => 'The username field is required.',
             'email-isexists' => 'The email adress is exists',
             'admin-cant-created' => 'This admin cant created',

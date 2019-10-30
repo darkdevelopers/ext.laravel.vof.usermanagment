@@ -23,5 +23,5 @@
             @include('vof.admin.usermanagment::partials.form-status')
         </div>
     </div>
-    @include('vof.admin.usermanagment::partials.create-read-update-form', ['create' => true, 'disabled' => false])
+    @include('vof.admin.usermanagment::partials.create-read-update-form', ['create' => false, 'disabled' => false, 'admin' => $admin])
 @endsection()
