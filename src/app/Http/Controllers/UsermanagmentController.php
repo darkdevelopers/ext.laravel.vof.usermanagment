@@ -69,14 +69,23 @@ class UsermanagmentController extends Controller
         if ($validator->fails()) {
             $failedRules = $validator->failed();
             if (isset($failedRules['name']['Required'])) {
-                return redirect(route('usermanagement.edit'))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.username-required'))->withInput()->withErrors($validator, 'error');
+                return redirect(route('usermanagement.edit', $id))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.username-required'))->withInput()->withErrors($validator, 'error');
             }
             if (isset($failedRules['email']['Required'])) {
-                return redirect(route('usermanagement.edit'))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.email-required'))->withInput()->withErrors($validator, 'error');
+                return redirect(route('usermanagement.edit', $id))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.email-required'))->withInput()->withErrors($validator, 'error');
+            }
+            if(isset($failedRules['email'])){
+                return redirect(route('usermanagement.edit', $id))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.email-is-wrong'))->withInput()->withErrors($validator, 'error');
+            }
+            if(isset($failedRules['password']['Min'])){
+                return redirect(route('usermanagement.edit', $id))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.password-too-short'))->withInput()->withErrors($validator, 'error');
+            }
+            if(isset($failedRules['password']['Required'])){
+                return redirect(route('usermanagement.edit', $id))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.password-required'))->withInput()->withErrors($validator, 'error');
             }
         }
 
-        Admin::where('id', $id)->update(['name' => $request->get('name'), 'email' => $request->get('email'), 'password' => Hash::make($request->get('password'))]);
+        Admin::where('id', $id)->update(['name' => $request->get('name'), 'password' => Hash::make($request->get('password'))]);
 
         return redirect(route('usermanagement'))->with('success', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.admin-created-success'));
     }
@@ -129,9 +138,6 @@ class UsermanagmentController extends Controller
 
         /** @var Admin $admin */
         $admin = Admin::create(['name' => $request->get('name'), 'email' => $request->get('email'), 'password' => Hash::make($request->get('password'))]);
-        if (!$admin->exists()) {
-            return redirect(route('usermanagement.create'))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.admin-cant-created'))->withInput();
-        }
 
         return redirect(route('usermanagement'))->with('success', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.admin-created-success'));
     }

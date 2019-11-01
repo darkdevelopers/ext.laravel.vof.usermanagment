@@ -5,7 +5,6 @@
  */
 
 namespace Vof\Usermanagment\Test;
-
 use Illuminate\Contracts\Console\Kernel;
 use Illuminate\Contracts\Foundation\Application;
 use Illuminate\Foundation\Testing\TestResponse;
@@ -15,7 +14,7 @@ use Vof\Admin\AdminFacade;
 use Vof\Admin\AdminServiceProvider;
 use Vof\Admin\Models\Admin;
 
-class CreateUsermanagementTest extends TestCase
+class EditUsermanagementTest extends TestCase
 {
     use WithFaker;
 
@@ -69,40 +68,22 @@ class CreateUsermanagementTest extends TestCase
     /**
      * @test
      */
-    public function testCreateUsermanagementPageLoad(): void
+    public function testEditUsermanagmentShowAndUpdate(): void
     {
         $this->startSession();
         /** @var array $admins */
-        $admins = factory(Admin::class)->create();
-
-        /** @var TestResponse $response */
-        $response = $this->actingAs($admins, 'admin')->followingRedirects()->get('/admin/usermanagement/create');
-        $response->assertStatus(200);
-        $response->assertSee(__('vof.admin.usermanagment::usermanagment.create.headline') . ' | VOF Admin');
-        $response->assertSee('<input type="text" id="name" name="name"');
-        $response->assertSee('<input type="email" id="email" name="email"');
-        $response->assertSee('<input type="password" id="password" name="password"');
-        $response->assertSee(__('vof.admin.usermanagment::usermanagment.partials.create-read-update.btn-save'));
-        $this->flushSession();
-    }
-
-    /**
-     * @test
-     */
-    public function testCreateUsermanagementSuccessfully(): void
-    {
-        $this->startSession();
-        /** @var array $admins */
-        $admin = factory(Admin::class)->create();
+        $admin = factory(Admin::class)->create(['name' => $this->faker->name]);
         $adminMake = factory(Admin::class)->make(['name' => $this->faker->name]);
 
         /** @var TestResponse $response */
-        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/create');
+        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/1/edit');
         $response->assertStatus(200);
+        $response->assertSee($admin->name);
+        $response->assertSee($admin->email);
 
-        $response = $this->post('admin/usermanagement', [
+        $response = $this->put('/admin/usermanagement/1', [
             'name' => $adminMake->name,
-            'email' => $adminMake->email,
+            'email' => $admin->email,
             'password' => 'secret12',
             '_token' => $this->app['session']->token(),
         ], [
@@ -110,26 +91,31 @@ class CreateUsermanagementTest extends TestCase
         ]);
         $response = $this->followRedirects($response);
 
+        $response->assertStatus(200);
         $response->assertSee($adminMake->name);
+        $response->assertSee($admin->email);
         $response->assertSee(__('vof.admin.usermanagment::usermanagment.partials.create-read-update.admin-created-success'));
+
         $this->flushSession();
     }
 
     /**
      * @test
      */
-    public function testCreateUsermanagementUnccessfullyNameRequired(): void
+    public function testEditUsermanagmentNameRequired(): void
     {
         $this->startSession();
-        /** @var array $admins */
-        $admin = factory(Admin::class)->create();
+        /** @var Admin $admin */
+        $admin = factory(Admin::class)->create(['name' => $this->faker->name]);
         $adminMake = factory(Admin::class)->make(['name' => $this->faker->name]);
 
         /** @var TestResponse $response */
-        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/create');
+        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/1/edit');
         $response->assertStatus(200);
+        $response->assertSee($admin->name);
+        $response->assertSee($admin->email);
 
-        $response = $this->post('admin/usermanagement', [
+        $response = $this->patch('/admin/usermanagement/1', [
             'name' => '',
             'email' => $adminMake->email,
             'password' => 'secret1337',
@@ -143,10 +129,11 @@ class CreateUsermanagementTest extends TestCase
         $this->flushSession();
     }
 
+
     /**
      * @test
      */
-    public function testCreateUsermanagementUnccessfullyWrongEmail(): void
+    public function testEditUsermanagmentWrongEmail(): void
     {
         $this->startSession();
         /** @var array $admins */
@@ -154,10 +141,10 @@ class CreateUsermanagementTest extends TestCase
         $adminMake = factory(Admin::class)->make(['name' => $this->faker->name, 'email' => 'dummy.dummy.de']);
 
         /** @var TestResponse $response */
-        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/create');
+        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/1/edit');
         $response->assertStatus(200);
 
-        $response = $this->post('admin/usermanagement', [
+        $response = $this->put('/admin/usermanagement/1', [
             'name' => $adminMake->name,
             'email' => 'dummy.dummy',
             'password' => 'secret12',
@@ -167,7 +154,6 @@ class CreateUsermanagementTest extends TestCase
         ]);
         $response = $this->followRedirects($response);
 
-        $response->assertSee($adminMake->name);
         $response->assertSee(__('vof.admin.usermanagment::usermanagment.partials.create-read-update.email-is-wrong'));
         $this->flushSession();
     }
@@ -175,7 +161,7 @@ class CreateUsermanagementTest extends TestCase
     /**
      * @test
      */
-    public function testCreateUsermanagementUnccessfullyEmailRequired(): void
+    public function testEditUsermanagmentEmailRequired(): void
     {
         $this->startSession();
         /** @var array $admins */
@@ -183,10 +169,10 @@ class CreateUsermanagementTest extends TestCase
         $adminMake = factory(Admin::class)->make(['name' => $this->faker->name]);
 
         /** @var TestResponse $response */
-        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/create');
+        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/1/edit');
         $response->assertStatus(200);
 
-        $response = $this->post('admin/usermanagement', [
+        $response = $this->put('/admin/usermanagement/1', [
             'name' => $adminMake->name,
             'email' => '',
             'password' => 'secret1337',
@@ -196,7 +182,6 @@ class CreateUsermanagementTest extends TestCase
         ]);
         $response = $this->followRedirects($response);
 
-        $response->assertSee($adminMake->name);
         $response->assertSee(__('vof.admin.usermanagment::usermanagment.partials.create-read-update.email-required'));
         $this->flushSession();
     }
@@ -204,7 +189,7 @@ class CreateUsermanagementTest extends TestCase
     /**
      * @test
      */
-    public function testCreateUsermanagementUnccessfullyPasswordTooShort(): void
+    public function testEditUsermanagmentPasswordTooShort(): void
     {
         $this->startSession();
         /** @var array $admins */
@@ -212,10 +197,10 @@ class CreateUsermanagementTest extends TestCase
         $adminMake = factory(Admin::class)->make(['name' => $this->faker->name]);
 
         /** @var TestResponse $response */
-        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/create');
+        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/1/edit');
         $response->assertStatus(200);
 
-        $response = $this->post('admin/usermanagement', [
+        $response = $this->put('/admin/usermanagement/1', [
             'name' => $adminMake->name,
             'email' => $adminMake->email,
             'password' => 'secr',
@@ -225,7 +210,6 @@ class CreateUsermanagementTest extends TestCase
         ]);
         $response = $this->followRedirects($response);
 
-        $response->assertSee($adminMake->name);
         $response->assertSee(__('vof.admin.usermanagment::usermanagment.partials.create-read-update.password-too-short'));
         $this->flushSession();
     }
@@ -233,7 +217,7 @@ class CreateUsermanagementTest extends TestCase
     /**
      * @test
      */
-    public function testCreateUsermanagementUnccessfullyPasswordRequired(): void
+    public function testEditUsermanagmentPasswordRequired(): void
     {
         $this->startSession();
         /** @var array $admins */
@@ -241,10 +225,10 @@ class CreateUsermanagementTest extends TestCase
         $adminMake = factory(Admin::class)->make(['name' => $this->faker->name]);
 
         /** @var TestResponse $response */
-        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/create');
+        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/1/edit');
         $response->assertStatus(200);
 
-        $response = $this->post('admin/usermanagement', [
+        $response = $this->put('/admin/usermanagement/1', [
             'name' => $adminMake->name,
             'email' => $adminMake->email,
             'password' => '',
@@ -254,35 +238,7 @@ class CreateUsermanagementTest extends TestCase
         ]);
         $response = $this->followRedirects($response);
 
-        $response->assertSee($adminMake->name);
         $response->assertSee(__('vof.admin.usermanagment::usermanagment.partials.create-read-update.password-required'));
-        $this->flushSession();
-    }
-
-    /**
-     * @test
-     */
-    public function testCreateUsermanagementUnsuccessfullyDuplicated(): void
-    {
-        $this->startSession();
-        /** @var array $admins */
-        $admin = factory(Admin::class)->create(['name' => $this->faker->name]);
-
-        /** @var TestResponse $response */
-        $response = $this->actingAs($admin, 'admin')->followingRedirects()->get('/admin/usermanagement/create');
-        $response->assertStatus(200);
-
-        $response = $this->post('admin/usermanagement', [
-            'name' => $admin->name,
-            'email' => $admin->email,
-            'password' => 'secret13',
-            '_token' => $this->app['session']->token(),
-        ], [
-            'content-type' => 'multipart/form-data',
-        ]);
-        $response = $this->followRedirects($response);
-
-        $response->assertSee(__('vof.admin.usermanagment::usermanagment.partials.create-read-update.email-isexists'));
         $this->flushSession();
     }
 }
