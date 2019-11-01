@@ -15,7 +15,7 @@ use Vof\Admin\AdminFacade;
 use Vof\Admin\AdminServiceProvider;
 use Vof\Admin\Models\Admin;
 
-class LoginTest extends TestCase
+class ShowUsermanagementTest extends TestCase
 {
     use WithFaker;
 

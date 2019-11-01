@@ -111,6 +111,15 @@ class UsermanagmentController extends Controller
             if (isset($failedRules['email']['Required'])) {
                 return redirect(route('usermanagement.create'))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.email-required'))->withInput()->withErrors($validator, 'error');
             }
+            if(isset($failedRules['email'])){
+                return redirect(route('usermanagement.create'))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.email-is-wrong'))->withInput()->withErrors($validator, 'error');
+            }
+            if(isset($failedRules['password']['Min'])){
+                return redirect(route('usermanagement.create'))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.password-too-short'))->withInput()->withErrors($validator, 'error');
+            }
+            if(isset($failedRules['password']['Required'])){
+                return redirect(route('usermanagement.create'))->with('error', trans('vof.admin.usermanagment::usermanagment.partials.create-read-update.password-required'))->withInput()->withErrors($validator, 'error');
+            }
         }
 
         $isUnique = Admin::where('email', $request->get('email'))->count();

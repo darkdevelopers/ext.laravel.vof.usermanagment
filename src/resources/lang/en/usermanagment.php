@@ -41,7 +41,11 @@ return [
             'btn-edit' => 'Edit',
             'btn-save' => 'Save',
             'username-required' => 'The username field is required.',
+            'email-required' => 'The email-adress field is required.',
+            'password-required' => 'The password field is required.',
             'email-isexists' => 'The email adress is exists',
+            'email-is-wrong' => 'This email adress is not valid',
+            'password-too-short' => 'Your password is to short. 8 length minimum.',
             'admin-cant-created' => 'This admin cant created',
             'admin-created-success' => 'Successfully created admin account!'
         ]
