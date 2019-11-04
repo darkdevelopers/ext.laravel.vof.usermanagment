@@ -8,6 +8,7 @@ namespace Vof\Usermanagment\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Illuminate\Support\Facades\Cache;
 use Illuminate\Support\Facades\Hash;
 use Vof\Admin\Models\Admin;
 use Validator;
@@ -36,7 +37,7 @@ class UsermanagmentController extends Controller
     public function index(Request $request)
     {
         return view('vof.admin.usermanagment::index', [
-            'admins' => Admin::paginate(self::USERMANGAMENT_PAGINATION_DEFAULT)
+            'admins' =>  Admin::paginate(self::USERMANGAMENT_PAGINATION_DEFAULT)
         ]);
     }
 
